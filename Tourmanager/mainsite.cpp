@@ -19,20 +19,20 @@ MainSite::~MainSite()
 void MainSite::on_mBtnAddFile_clicked()
 {
     AddFileDlg*addfileDlg=new AddFileDlg(this);
-    this->close();
+    //this->close();
     addfileDlg->exec();
 }
 
 void MainSite::on_mBtnSearch_clicked()
 {
     SearchDlg*searchDlg=new SearchDlg(this);
-    this->close();
+    //this->close();
     searchDlg->exec();
 }
 
 void MainSite::on_mBtnUseMap_clicked()
 {
     UseMapDlg*useMapDlg=new UseMapDlg(this);
-    this->close();
+    //this->close();
     useMapDlg->exec();
 }
