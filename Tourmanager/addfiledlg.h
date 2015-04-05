@@ -15,13 +15,16 @@ public:
     explicit AddFileDlg(QWidget *parent = 0);
     ~AddFileDlg();
     QStringList imageFileNames;
+    void saveFile(QString);
 
 private slots:
     void on_wBtnAddImage_clicked();
 
     void on_wBtnPreviewImage_clicked();
 
-    void on_pushButton_clicked();
+    void on_wBtnDelete_clicked();
+
+    void on_wBtnSubmit_clicked();
 
 private:
     Ui::AddFileDlg *ui;

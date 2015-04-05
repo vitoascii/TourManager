@@ -170,7 +170,7 @@
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="wBtnDelete">
    <property name="geometry">
     <rect>
      <x>150</x>
@@ -221,5 +221,22 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>wBtnCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>AddFileDlg</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>137</x>
+     <y>481</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>248</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
