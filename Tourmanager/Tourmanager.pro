@@ -16,14 +16,17 @@ SOURCES += main.cpp\
         mainsite.cpp \
     addfiledlg.cpp \
     searchdlg.cpp \
-    usemapdlg.cpp
+    usemapdlg.cpp \
+    previewimagedlg.cpp
 
 HEADERS  += mainsite.h \
     addfiledlg.h \
     searchdlg.h \
-    usemapdlg.h
+    usemapdlg.h \
+    previewimagedlg.h
 
 FORMS    += mainsite.ui \
     addfiledlg.ui \
     searchdlg.ui \
-    usemapdlg.ui
+    usemapdlg.ui \
+    previewimagedlg.ui

@@ -14,6 +14,14 @@ class AddFileDlg : public QDialog
 public:
     explicit AddFileDlg(QWidget *parent = 0);
     ~AddFileDlg();
+    QStringList imageFileNames;
+
+private slots:
+    void on_wBtnAddImage_clicked();
+
+    void on_wBtnPreviewImage_clicked();
+
+    void on_pushButton_clicked();
 
 private:
     Ui::AddFileDlg *ui;
