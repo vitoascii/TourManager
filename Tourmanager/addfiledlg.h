@@ -15,7 +15,7 @@ public:
     explicit AddFileDlg(QWidget *parent = 0);
     ~AddFileDlg();
     QStringList imageFileNames;
-    void saveFile(QString);
+    bool saveFile(QString);
 
 private slots:
     void on_wBtnAddImage_clicked();

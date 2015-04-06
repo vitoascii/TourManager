@@ -14,6 +14,12 @@ class SearchDlg : public QDialog
 public:
     explicit SearchDlg(QWidget *parent = 0);
     ~SearchDlg();
+    QStringList searchByDate(QDate);
+    QStringList searchByPlace(QString);
+    QStringList searchByTitle(QString);
+
+private slots:
+    void on_sTbtnSearch_clicked();
 
 private:
     Ui::SearchDlg *ui;

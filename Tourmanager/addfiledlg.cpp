@@ -15,6 +15,7 @@ AddFileDlg::AddFileDlg(QWidget *parent) :
     ui(new Ui::AddFileDlg)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Write Dairy");
     QGridLayout*layout=new QGridLayout;
     layout->addWidget(ui->wLblTprz,0,0,3,10);
     layout->addWidget(ui->wLetTitle,3,0,2,30);
@@ -68,27 +69,32 @@ void AddFileDlg::on_wBtnDelete_clicked()
 
 void AddFileDlg::on_wBtnSubmit_clicked()
 {
+    bool isSaved=false;
     QDir *saveDir = new QDir;
     QString documentsLocation=QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
             .append("/tourManaer_dairy");
     //qDebug()<<documentsLocation;
     if(saveDir->exists(documentsLocation))
-        saveFile(documentsLocation);
+        isSaved=saveFile(documentsLocation);
     else
     {
          if(saveDir->mkdir(documentsLocation))
-             saveFile(documentsLocation);
+             isSaved=saveFile(documentsLocation);
          else
              QMessageBox::warning(this,tr("Can't save dairy!"),tr("Failed to create direction!-1"));
     }
-    this->close();
+    if(isSaved)
+    {
+        QMessageBox::information(this,"Save successful!","Your diary is saved successfully!");
+        this->close();
+    }
 }
 /*
- * 保存的文件格式为：时间地点/序号/标题.txt+图片文件夹，根目录Mydocument/tourManager_dairy
- * 如Mydocument/tourManager_dairy/20010101武汉/01/今天我真高兴.txt
- * Mydocument/tourManager_dairy/20010101武汉/01/Image/01.jpg
+ * 保存的文件格式为：时间地点/标题/标题.txt+图片文件夹，根目录Mydocument/tourManager_dairy
+ * 如Mydocument/tourManager_dairy/20010101武汉/今天我真高兴/今天我真高兴.txt
+ * Mydocument/tourManager_dairy/20010101武汉/今天我真高兴/Image/01.jpg
  */
-void  AddFileDlg::saveFile(QString documentsLocation)
+bool AddFileDlg::saveFile(QString documentsLocation)
 {
     //获取日期
     QDateTimeEdit*dateTimeEdit=ui->wDetDate;
@@ -100,58 +106,57 @@ void  AddFileDlg::saveFile(QString documentsLocation)
 
     //判断文件夹是否存在
     QDir *saveDir = new QDir;
-    QString saveLocation=documentsLocation.append(tr("/%1%2").arg(date).arg(place));
+    QString saveLocation=documentsLocation.append(tr("/%1%2/").arg(date).arg(place));
     if(!saveDir->exists(saveLocation))
     {
         if(!saveDir->mkdir(saveLocation))
             QMessageBox::warning(this,tr("Can't save dairy!"),tr("Failed to create direction!-2"));
     }
-    //文件夹下新建一个序号文件夹，以防一天内同一地点有多条日志
-    int saveIndex=1;
-    QString tempLocation;
-    for(;1;saveIndex++)
-    {
-        tempLocation=saveLocation;
-        if(!saveDir->exists(tempLocation.append(tr("/%1/").arg(saveIndex))))
-        {
 
-            saveLocation=saveLocation.append(tr("/%1/").arg(saveIndex));
-            qDebug()<<saveLocation;
-            if(!saveDir->mkdir(saveLocation))
-                QMessageBox::warning(this,tr("Can't save dairy!"),tr("Failed to create direction!-3"));
-            break;
-        }
-    }
     //获取日志文字内容及标题
     QString diaryText=ui->wTetText->toPlainText();
     QString diaryTitle=ui->wLetTitle->text();
+
+    if(saveDir->exists(saveLocation.append(diaryTitle)))
+    {
+        qDebug()<<saveLocation;
+        QMessageBox::warning(this,tr("Can't save dairy!"),tr("Diary is existed!Please change the title."));
+        return false;
+    }
+    if(!saveDir->mkdir(saveLocation))
+    {
+        QMessageBox::warning(this,tr("Can't save dairy!"),tr("Failed to create direction!"));
+        return false;
+    }
+
     //保存
     QString textLocation=saveLocation;
-    textLocation.append(diaryTitle.append(".txt"));
+    textLocation.append("/").append(diaryTitle.append(".txt"));
     //qDebug()<<diaryText;
     QFile*file1=new QFile(textLocation);
     if(!file1->open(QIODevice::WriteOnly | QIODevice::Text))
     {
         QMessageBox::warning(this,tr("Can't save dairy!"),tr("Failed to create file!"));
-        return;
+        return false;
     }
     QTextStream txtOutput(file1);
     txtOutput<<diaryText<<endl;
     file1->close();
 
     //保存图片
-    if(!saveDir->exists(saveLocation.append("image/")))
+    if(!saveDir->exists(saveLocation.append("/image/")))
     {
-        qDebug()<<saveLocation;
+        //qDebug()<<saveLocation;
         if(!saveDir->mkdir(saveLocation))
             QMessageBox::warning(this,tr("Can't save dairy!"),tr("Failed to create iamge direction!"));
     }
+    QString tempLocation;
     for(int i=0;i<imageFileNames.size();i++)
     {
         tempLocation=saveLocation;
         QImage*image=new QImage(imageFileNames[i]);
         QFile*file2=new QFile(tempLocation.append(tr("%1.jpg").arg(i+1)));
-        qDebug()<<tempLocation;
+        //qDebug()<<tempLocation;
         if (!file2->open(QIODevice::ReadWrite))
         {
             break;
@@ -164,6 +169,8 @@ void  AddFileDlg::saveFile(QString documentsLocation)
         file2->close();
         buffer.close();
     }
+    return true;
 }
+
 
 

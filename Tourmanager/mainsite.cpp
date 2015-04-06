@@ -9,6 +9,7 @@ MainSite::MainSite(QWidget *parent) :
     ui(new Ui::MainSite)
 {
     ui->setupUi(this);
+    this->setWindowTitle("首页");
 }
 
 MainSite::~MainSite()
