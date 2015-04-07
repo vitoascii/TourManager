@@ -72,7 +72,7 @@ void AddFileDlg::on_wBtnSubmit_clicked()
     bool isSaved=false;
     QDir *saveDir = new QDir;
     QString documentsLocation=QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
-            .append("/tourManaer_dairy");
+            .append("/tourManager_dairy");
     //qDebug()<<documentsLocation;
     if(saveDir->exists(documentsLocation))
         isSaved=saveFile(documentsLocation);

@@ -10,23 +10,44 @@ SearchDlg::SearchDlg(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("查询");
+    QLabel*lblRes[6];
+    lblRes[0]=ui->sLblResult1;
+    lblRes[1]=ui->sLblResult2;
+    lblRes[2]=ui->sLblResult3;
+    lblRes[3]=ui->sLblResult4;
+    lblRes[4]=ui->sLblResult5;
+    lblRes[5]=ui->sLblResult6;
+
     QString documentsLocation=QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
-            .append("/tourManaer_dairy");
+            .append("/tourManager_dairy");
+    QStringList fileList;
+    QStringList diaryList;
     QDir*dir1=new QDir(documentsLocation);
     QStringList filter1;
     QList<QFileInfo> *fileInfo1=new QList<QFileInfo>(dir1->entryInfoList(filter1));
-    for(int i=0;i<fileInfo1->size();i++)
+
+    for(int i=fileInfo1->size()-1,count=0;i>=0;i--)
     {
-        //qDebug()<<fileInfo1->at(i).filePath();
-        //qDebug()<<fileInfo1->at(i).fileName();
+        if(fileInfo1->at(i).filePath().endsWith("."))
+            continue;
         QDir*dir2=new QDir(fileInfo1->at(i).filePath());
         QStringList filter2;
         QList<QFileInfo> *fileInfo2=new QList<QFileInfo>(dir2->entryInfoList(filter2));
-        for(int j=0;j<fileInfo2->size();j++)
+        for(int j=fileInfo2->size()-1;j>=0;j--)
         {
-            //qDebug()<<fileInfo2->at(j).filePath();
-            //qDebug()<<fileInfo2->at(j).fileName();
+            if(fileInfo2->at(j).filePath().endsWith("."))
+                continue;
+            fileList.append(fileInfo2->at(j).filePath());
+            diaryList.append(fileList.at(count).mid(documentsLocation.size()+1));
+            count++;
         }
+        if(count>6)
+            break;
+    }
+
+    for(int i=0;(i<diaryList.size())&&(i<6);i++)
+    {
+        lblRes[i]->setText(diaryList.at(i));
     }
 }
 
@@ -41,7 +62,7 @@ void SearchDlg::on_sTbtnSearch_clicked()
     switch(ui->sCboxSearchWay->currentIndex())
     {
     case 0:temp=searchByDate(ui->sDetSearchDate->date());
-           qDebug()<<temp;
+           //qDebug()<<temp;
     case 1:
     case 2:
     default:break;
@@ -54,7 +75,31 @@ void SearchDlg::on_sTbtnSearch_clicked()
 
 QStringList SearchDlg::searchByDate(QDate date)
 {
-    qDebug()<<date.toString(Qt::ISODate);
+    QString sDate=date.toString(Qt::ISODate);
+    QString documentsLocation=QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
+            .append("/tourManager_dairy");
+    QStringList fileList;
+    QStringList diaryList;
+    QDir*dir1=new QDir(documentsLocation);
+    QStringList filter1;
+    QList<QFileInfo> *fileInfo1=new QList<QFileInfo>(dir1->entryInfoList(filter1));
+
+    for(int i=fileInfo1->size()-1;i>=0;i--)
+    {
+        if(fileInfo1->at(i).filePath().endsWith("."))
+            continue;
+        QDir*dir2=new QDir(fileInfo1->at(i).filePath());
+        QStringList filter2;
+        QList<QFileInfo> *fileInfo2=new QList<QFileInfo>(dir2->entryInfoList(filter2));
+        for(int j=fileInfo2->size()-1;j>=0;j--)
+        {
+            if(fileInfo2->at(j).filePath().endsWith("."))
+                continue;
+            fileList.append(fileInfo2->at(j).filePath());
+            //diaryList.append(fileList.at(count).mid(documentsLocation.size()+1));
+        }
+    }
+
     QStringList temp;
     temp.append("1");
     temp.append("2");
