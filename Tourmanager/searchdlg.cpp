@@ -4,13 +4,13 @@
 #include <QStandardPaths>
 #include <QFileDialog>
 
+QLabel*lblRes[6];
 SearchDlg::SearchDlg(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SearchDlg)
 {
     ui->setupUi(this);
     this->setWindowTitle("查询");
-    QLabel*lblRes[6];
     lblRes[0]=ui->sLblResult1;
     lblRes[1]=ui->sLblResult2;
     lblRes[2]=ui->sLblResult3;
@@ -18,6 +18,7 @@ SearchDlg::SearchDlg(QWidget *parent) :
     lblRes[4]=ui->sLblResult5;
     lblRes[5]=ui->sLblResult6;
 
+    //先显示最近添加的日志
     QString documentsLocation=QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
             .append("/tourManager_dairy");
     QStringList fileList;
@@ -58,24 +59,30 @@ SearchDlg::~SearchDlg()
 
 void SearchDlg::on_sTbtnSearch_clicked()
 {
-    QStringList temp;
+    //QLabel*lblRes[6];
+    lblRes[0]=ui->sLblResult1;
+    lblRes[1]=ui->sLblResult2;
+    lblRes[2]=ui->sLblResult3;
+    lblRes[3]=ui->sLblResult4;
+    lblRes[4]=ui->sLblResult5;
+    lblRes[5]=ui->sLblResult6;
+    QStringList fileList;
     switch(ui->sCboxSearchWay->currentIndex())
     {
-    case 0:temp=searchByDate(ui->sDetSearchDate->date());
-           //qDebug()<<temp;
-    case 1:
-    case 2:
+    case 0:fileList=search(ui->sDetSearchDate->date().toString(Qt::ISODate));break;
+    case 1:fileList=search(ui->sLetSearchPlace->text());break;
+    case 2:fileList=search(ui->sLetSearchTitle->text());break;
     default:break;
-
-
     }
-
-
+    qDebug()<<fileList;
+    for(int i=0;i<6;i++)
+    {
+        i<fileList.size()?lblRes[i]->setText(fileList.at(i)):lblRes[i]->clear();
+    }
 }
 
-QStringList SearchDlg::searchByDate(QDate date)
+QStringList SearchDlg::search(QString searchKey)
 {
-    QString sDate=date.toString(Qt::ISODate);
     QString documentsLocation=QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
             .append("/tourManager_dairy");
     QStringList fileList;
@@ -84,7 +91,7 @@ QStringList SearchDlg::searchByDate(QDate date)
     QStringList filter1;
     QList<QFileInfo> *fileInfo1=new QList<QFileInfo>(dir1->entryInfoList(filter1));
 
-    for(int i=fileInfo1->size()-1;i>=0;i--)
+    for(int i=fileInfo1->size()-1,count=0;i>=0;i--)
     {
         if(fileInfo1->at(i).filePath().endsWith("."))
             continue;
@@ -96,28 +103,13 @@ QStringList SearchDlg::searchByDate(QDate date)
             if(fileInfo2->at(j).filePath().endsWith("."))
                 continue;
             fileList.append(fileInfo2->at(j).filePath());
-            //diaryList.append(fileList.at(count).mid(documentsLocation.size()+1));
+            if(fileList.last().indexOf(searchKey)!=-1)
+            {
+                diaryList.append(fileList.last().mid(documentsLocation.size()+1));
+                count++;
+            }
         }
     }
-
-    QStringList temp;
-    temp.append("1");
-    temp.append("2");
-    return temp;
-
-
+    return diaryList;
 }
-QStringList SearchDlg::searchByPlace(QString place)
-{
-    QStringList temp;
-    temp.append("1");
-    temp.append("2");
-    return temp;
-}
-QStringList SearchDlg::searchByTitle(QString title)
-{
-    QStringList temp;
-    temp.append("1");
-    temp.append("2");
-    return temp;
-}
+
