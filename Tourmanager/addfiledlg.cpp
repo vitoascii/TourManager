@@ -78,20 +78,12 @@ AddFileDlg::AddFileDlg(QString folderPaths,QWidget *parent) :
     QString strPlace=folderPaths.mid(10,folderPaths.indexOf("/")-10);
     ui->wLetPlace->setText(strPlace);
     ui->wLetTitle->setText(fileName);
-    //qDebug()<<imageFileNames;
 
     ui->wTetText->clear();
-    //QFile file(filePath);
-    //if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-         //return;
-    //QString data = file.readAll();
-    //ui->wTetText->setText(data);
-    //qDebug()<<data;
 
     QFile f(filePath);
     if(!f.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        //cout << "Open failed." << endl;
         return ;
     }
     QTextStream txtInput(&f);
@@ -107,7 +99,6 @@ AddFileDlg::AddFileDlg(QString folderPaths,QWidget *parent) :
     int month=strDate.mid(5,2).toInt();
     int day=strDate.right(2).toInt();
     ui->wDetDate->setDate(QDate(year,month,day));
-
 }
 
 AddFileDlg::~AddFileDlg()
@@ -120,7 +111,6 @@ void AddFileDlg::on_wBtnAddImage_clicked()
     QString imageFileName=QFileDialog::getOpenFileName(this,tr("选择图片"),"C:",tr("图片文件(*png *jpg)"));
     imageFileNames.append(imageFileName);
     ui->wLblImageAmount->setText(tr("%1 is Added.").arg(imageFileNames.size()));
-    //qDebug()<<imageFileNames;
 }
 
 void AddFileDlg::on_wBtnPreviewImage_clicked()
@@ -147,7 +137,7 @@ void AddFileDlg::on_wBtnSubmit_clicked()
     QDir *saveDir = new QDir;
     QString documentsLocation=QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
             .append("/tourManager_dairy");
-    //qDebug()<<documentsLocation;
+
     if(saveDir->exists(documentsLocation))
         isSaved=saveFile(documentsLocation);
     else
@@ -176,7 +166,6 @@ bool AddFileDlg::saveFile(QString documentsLocation)
 
     //获取地点
     QString place=ui->wLetPlace->text();
-    //qDebug()<<place;
 
     //判断文件夹是否存在
     QDir *saveDir = new QDir;
@@ -196,14 +185,12 @@ bool AddFileDlg::saveFile(QString documentsLocation)
     {
         if(mode==ADD_MODE)
         {
-            //qDebug()<<saveLocation;
             QMessageBox::warning(this,tr("Can't save dairy!"),tr("Diary is existed!Please change the title."));
             return false;
         }
         else
         {
             DeleteDirectory(saveLocation);
-            //saveDir->rmdir(saveLocation);
         }
     }
     if(!saveDir->mkdir(saveLocation))
@@ -216,7 +203,7 @@ bool AddFileDlg::saveFile(QString documentsLocation)
     //保存
     QString textLocation=saveLocation;
     textLocation.append("/").append(diaryTitle.append(".txt"));
-    //qDebug()<<diaryText;
+
     QFile*file1=new QFile(textLocation);
     if(!file1->open(QIODevice::WriteOnly | QIODevice::Text))
     {
@@ -230,7 +217,6 @@ bool AddFileDlg::saveFile(QString documentsLocation)
     //保存图片
     if(!saveDir->exists(saveLocation.append("/image/")))
     {
-        //qDebug()<<saveLocation;
         if(!saveDir->mkdir(saveLocation))
             QMessageBox::warning(this,tr("Can't save dairy!"),tr("Failed to create iamge direction!"));
     }
@@ -240,7 +226,6 @@ bool AddFileDlg::saveFile(QString documentsLocation)
         tempLocation=saveLocation;
         QImage*image=new QImage(imageFileNames[i]);
         QFile*file2=new QFile(tempLocation.append(tr("%1.jpg").arg(i+1)));
-        //qDebug()<<tempLocation;
         if (!file2->open(QIODevice::ReadWrite))
         {
             break;

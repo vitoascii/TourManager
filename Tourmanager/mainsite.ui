@@ -6,50 +6,30 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>600</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainSite</string>
   </property>
-  <widget class="QPushButton" name="mBtnAddFile">
+  <widget class="QLabel" name="mLblTitle">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>100</y>
-     <width>75</width>
-     <height>23</height>
+     <x>10</x>
+     <y>0</y>
+     <width>211</width>
+     <height>51</height>
     </rect>
    </property>
-   <property name="text">
-    <string>add</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="mBtnSearch">
-   <property name="geometry">
-    <rect>
-     <x>120</x>
-     <y>140</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
+   <property name="font">
+    <font>
+     <family>幼圆</family>
+     <pointsize>22</pointsize>
+    </font>
    </property>
    <property name="text">
-    <string>search</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="mBtnUseMap">
-   <property name="geometry">
-    <rect>
-     <x>220</x>
-     <y>100</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>map</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:24pt; font-weight:600; color:#0055ff;&quot;&gt;旅游管理系统&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
  </widget>

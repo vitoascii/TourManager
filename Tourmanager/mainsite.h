@@ -16,11 +16,11 @@ public:
     ~MainSite();
 
 private slots:
-    void on_mBtnAddFile_clicked();
+    void on_mBtnAdd_clicked();
 
-    void on_mBtnSearch_clicked();
+    void on_mBtnSch_clicked();
 
-    void on_mBtnUseMap_clicked();
+    void on_mBtnMap_clicked();
 
 private:
     Ui::MainSite *ui;

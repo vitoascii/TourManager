@@ -18,14 +18,16 @@ SOURCES += main.cpp\
     searchdlg.cpp \
     usemapdlg.cpp \
     previewimagedlg.cpp \
-    showfiledlg.cpp
+    showfiledlg.cpp \
+    mybutton.cpp
 
 HEADERS  += mainsite.h \
     addfiledlg.h \
     searchdlg.h \
     usemapdlg.h \
     previewimagedlg.h \
-    showfiledlg.h
+    showfiledlg.h \
+    mybutton.h
 
 FORMS    += mainsite.ui \
     addfiledlg.ui \
@@ -33,3 +35,8 @@ FORMS    += mainsite.ui \
     usemapdlg.ui \
     previewimagedlg.ui \
     showfiledlg.ui
+
+RESOURCES += \
+    icon.qrc
+
+RC_FILE += tourmanager.rc

@@ -69,7 +69,6 @@ ShowFileDlg::ShowFileDlg(QString foldName,QWidget *parent) :
     QFile f(filePath);
     if(!f.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        //cout << "Open failed." << endl;
         return ;
     }
     QTextStream txtInput(&f);
@@ -92,8 +91,10 @@ ShowFileDlg::~ShowFileDlg()
 void ShowFileDlg::on_shBtnEdit_clicked()
 {
     AddFileDlg*addfileDlg=new AddFileDlg(folderName,this);
-    this->close();
+    addfileDlg->setWindowTitle("编辑日志");
+    //this->hide();
     addfileDlg->exec();
+    this->close();
 }
 
 void ShowFileDlg::on_shBtnDelete_clicked()
